@@ -4,6 +4,8 @@ import (
 	"encoding/json"
 	"net/http"
 	"online-shop/internal/services"
+
+	"github.com/go-chi/chi/v5"
 )
 
 type SearchHandler struct {
@@ -29,4 +31,8 @@ func (h *SearchHandler) HandleSearch(w http.ResponseWriter, r *http.Request) {
 
 	w.Header().Set("Content-Type", "application/json")
 	json.NewEncoder(w).Encode(products)
+}
+
+func (h *SearchHandler) SetupRoutes(r chi.Router) {
+	r.Get("/search", h.HandleSearch)
 }

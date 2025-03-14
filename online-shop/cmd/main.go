@@ -7,6 +7,8 @@ import (
 	"online-shop/internal/handlers"
 	"online-shop/internal/repository"
 	"online-shop/internal/services"
+
+	"github.com/go-chi/chi/v5"
 )
 
 func main() {
@@ -16,9 +18,11 @@ func main() {
 	searchService := services.NewSearchService(productRepo)
 	searchHandler := handlers.NewSearchHandler(searchService)
 
-	http.HandleFunc("/search", searchHandler.HandleSearch)
+	r := chi.NewRouter()
+
+	searchHandler.SetupRoutes(r)
 
 	log.Println("Сервер запущен на порту 8080")
-	log.Fatal(http.ListenAndServe(":8080", nil))
+	log.Fatal(http.ListenAndServe(":8080", r))
 
 }
