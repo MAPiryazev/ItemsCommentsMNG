@@ -43,14 +43,7 @@ cd online-shop
 Создайте файл `.env` в папке `environment/` и укажите параметры подключения к базе данных:
 ```ini
 POSTGRES_HOST=localhost
-POSTGRES_PORT=5432
-POSTGRES_USER=postgres
-POSTGRES_PASSWORD=secret
-POSTGRES_NAME=postgres
-POSTGRES_SSLMODE=disable
-POSTGRES_MAX_OPEN_CONNS=25
-POSTGRES_MAX_IDLE_CONNS=10
-POSTGRES_CONN_MAX_LIFETIME=15
+и так далее
 ```
 
 ### 3. Запуск приложения
