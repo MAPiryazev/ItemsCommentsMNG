@@ -1,7 +1,7 @@
 services:
   db:
     image: postgres:latest
-    container_name: online-shop-db
+    container_name: psql_products
     restart: on-failure:5  #В случае ошибки контейнер попробует перезапуститься 5 раз
     env_file:
       - environment/.env
@@ -9,6 +9,30 @@ services:
       - "5432:5432"
     volumes:
       - pg_data:/var/lib/postgresql/data
+      - ./migrations:/docker-entrypoint-initdb.d  # Монтируем  папку с SQL скриптами
+
+  minio:
+    image: minio/minio:latest
+    container_name: minio
+    env_file:
+      - environment/.env
+    volumes:
+      - minio_data:/data
+    command: server /data
+
+  minio-client:
+    image: minio/mc
+    container_name: minio-client
+    depends_on:
+      - minio
+    entrypoint: >
+      /bin/sh -c "
+      sleep 5;
+      mc alias set myminio http://minio:9000 ${MINIO_ROOT_USER} ${MINIO_ROOT_PASSWORD};
+      mc mb myminio/product-images;
+      exit 0;
+      "
 
 volumes:
   pg_data:
+  minio_data:

@@ -6,3 +6,9 @@ CREATE TABLE products (
     category VARCHAR(100) NOT NULL,
     created_at TIMESTAMP DEFAULT NOW()
 );
+
+CREATE TABLE product_images (
+    id SERIAL PRIMARY KEY,
+    product_id INT REFERENCES products(id) ON DELETE CASCADE,
+    image_url TEXT NOT NULL
+);
