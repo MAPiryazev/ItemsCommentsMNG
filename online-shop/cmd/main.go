@@ -12,9 +12,10 @@ import (
 )
 
 func main() {
-	db.InitDB()
+	db.InitPsqlDB()
+	db.InitMinio()
 
-	productRepo := repository.NewProductRepo(db.DB)
+	productRepo := repository.NewProductRepo(db.PsqlDB, db.MinioClient)
 	searchService := services.NewSearchService(productRepo)
 	searchHandler := handlers.NewSearchHandler(searchService)
 
