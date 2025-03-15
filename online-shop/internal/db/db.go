@@ -23,9 +23,9 @@ func InitDB() {
 		log.Fatal("Ошибка подключения к БД:", err)
 	}
 
-	DB.SetMaxOpenConns(25)
-	DB.SetMaxIdleConns(10)
-	DB.SetConnMaxLifetime(15 * time.Minute)
+	DB.SetMaxOpenConns(cfg.DBMaxOpenConns)
+	DB.SetMaxIdleConns(cfg.DBMaxIdleConns)
+	DB.SetConnMaxLifetime(time.Duration(cfg.DBMaxConnLifeTime) * time.Minute)
 
 	err = DB.Ping()
 	if err != nil {

@@ -18,6 +18,11 @@ type Config struct {
 	DBMaxOpenConns    int
 	DBMaxIdleConns    int
 	DBMaxConnLifeTime int
+
+	DBMinioRootUser  string
+	DBMinioRootPassw string
+	DBMinioBucket    string
+	DBMinioEndpoint  string
 }
 
 func LoadConfig() *Config {
@@ -26,9 +31,18 @@ func LoadConfig() *Config {
 		log.Fatal("Error while fetching .env file for database")
 	}
 
-	MaxOpenConns, _ := strconv.Atoi(os.Getenv("POSTGRES_MAX_OPEN_CONNS"))
-	MaxIdleConns, _ := strconv.Atoi(os.Getenv("POSTGRES_MAX_IDLE_CONNS"))
-	MaxConnLifeTime, _ := strconv.Atoi(os.Getenv("POSTGRES_CONN_MAX_LIFETIME"))
+	MaxOpenConns, err := strconv.Atoi(os.Getenv("POSTGRES_MAX_OPEN_CONNS"))
+	if err != nil {
+		panic("ошибка при считывании POSTGRES_MAX_OPEN_CONNS")
+	}
+	MaxIdleConns, err := strconv.Atoi(os.Getenv("POSTGRES_MAX_IDLE_CONNS"))
+	if err != nil {
+		panic("ошибка при считывании POSTGRES_MAX_IDLE_CONNS")
+	}
+	MaxConnLifeTime, err := strconv.Atoi(os.Getenv("POSTGRES_CONN_MAX_LIFETIME"))
+	if err != nil {
+		panic("ошибка при считывании POSTGRES_CONN_MAX_LIFETIME")
+	}
 
 	return &Config{
 		DBHost:            os.Getenv("POSTGRES_HOST"),
@@ -40,6 +54,11 @@ func LoadConfig() *Config {
 		DBMaxOpenConns:    MaxOpenConns,
 		DBMaxIdleConns:    MaxIdleConns,
 		DBMaxConnLifeTime: MaxConnLifeTime,
+
+		DBMinioRootUser:  os.Getenv("MINIO_ROOT_USER"),
+		DBMinioRootPassw: os.Getenv("MINIO_ROOT_PASSWORD"),
+		DBMinioBucket:    os.Getenv("MINIO_BUCKET"),
+		DBMinioEndpoint:  os.Getenv("MINIO_ENDPOINT"),
 	}
 
 }
