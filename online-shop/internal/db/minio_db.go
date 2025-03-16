@@ -4,6 +4,7 @@ import (
 	"context"
 	"log"
 	"online-shop/config"
+	"time"
 
 	"github.com/minio/minio-go/v7"
 	"github.com/minio/minio-go/v7/pkg/credentials"
@@ -24,6 +25,8 @@ func InitMinio() {
 
 	MinioClient = client
 	log.Println("Подключение к Minio успешно создано")
+
+	time.Sleep(5 * time.Second)
 
 	ctx := context.Background()
 	exists, err := MinioClient.BucketExists(ctx, cfg.DBMinioBucket)
